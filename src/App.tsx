@@ -31,11 +31,18 @@ import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
 
+import TableUI from './components/TableUI';
+import ChartUI from './components/ChartUI';
+
 import DataFetcher from './components/functions/DataFetcher';
+import { Hourly } from '@/types/DashboardTypes';
+
+import { useState } from 'react';
 
 function App() {
-
-    const dataFetcherOutput = DataFetcher();
+    const [latitude, setLatitude] = useState<string>("0");
+    const [longitud, setLongitud] = useState<string>("0");
+    const dataFetcherOutput = DataFetcher({latitude, longitud});
 
      return (
       <>
@@ -48,7 +55,10 @@ function App() {
 
              <AlertUI description="No se preveen lluvias"/>
 
-             <SelectorUI></SelectorUI>
+             <SelectorUI
+                setLatitude={setLatitude}
+                setLongitud={setLongitud}
+             ></SelectorUI>
 
              {/* Indicadores */}
              <Grid container size={{ xs: 12, md: 9 }} >
@@ -85,6 +95,24 @@ function App() {
                              title='Humedad relativa'
                              description={dataFetcherOutput.data.current.relative_humidity_2m + " " + dataFetcherOutput.data.current_units.relative_humidity_2m} />
                      </Grid>
+
+                    {/* Gráfico */}
+                    <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+                        <ChartUI
+                            time={dataFetcherOutput.data.hourly.time}
+                            temperature_2m={dataFetcherOutput.data.hourly.temperature_2m}
+                            wind_speed_10m={dataFetcherOutput.data.hourly.wind_speed_10m}
+                        />
+                    </Grid>
+
+                    {/* Tabla */}
+                    <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+                        {dataFetcherOutput.data && (<TableUI
+                            time={dataFetcherOutput.data.hourly.time}
+                            temperature_2m={dataFetcherOutput.data.hourly.temperature_2m}
+                            wind_speed_10m={dataFetcherOutput.data.hourly.wind_speed_10m}
+                        />)}
+                    </Grid>
 
                  </>
                  )}

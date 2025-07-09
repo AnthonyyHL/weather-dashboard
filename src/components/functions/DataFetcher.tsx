@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { RootInterface } from '../../types/DashboardTypes';
+import { OpenMeteoResponse } from '../../types/DashboardTypes';
 
-const DataFetcher = () => {
-  const [data, setData] = useState<RootInterface | null>(null);
+const DataFetcher = ({latitude, longitud}:{latitude: string, longitud: string}) => {
+  const [data, setData] = useState<OpenMeteoResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -10,7 +10,7 @@ const DataFetcher = () => {
     const fetchData = async () => {
 
       try {
-        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago');
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitud}&hourly=temperature_2m,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -26,6 +26,8 @@ const DataFetcher = () => {
 
     fetchData();
   }, []);
+
+  console.log("DataFetcher - data:", data);
 
   return { data, loading, error };
 };

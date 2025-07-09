@@ -4,11 +4,21 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 
-export default function SelectorUI() {
+export default function SelectorUI({ setLatitude, setLongitud }: { setLatitude: (lat: string) => void; setLongitud: (lon: string) => void; }) {
     const [cityInput, setCityInput] = useState<string>("");
     
     const handleChange = (event: SelectChangeEvent<string>) => {
-        setCityInput(event.target.value);
+        // setCityInput(event.target.value);
+        if (event.target.value === "guayaquil") {
+            setCityInput("guayaquil");
+            setLatitude("-2.170997");
+            setLongitud("-79.922359");
+        }
+        else if (event.target.value === "quito") {
+            setCityInput("quito");
+            setLatitude("-0.22985");
+            setLongitud("-78.52495");
+        }
     };
 
     return (
