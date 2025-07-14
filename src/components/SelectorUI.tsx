@@ -8,16 +8,31 @@ export default function SelectorUI({ setLatitude, setLongitud }: { setLatitude: 
     const [cityInput, setCityInput] = useState<string>("");
     
     const handleChange = (event: SelectChangeEvent<string>) => {
-        // setCityInput(event.target.value);
-        if (event.target.value === "guayaquil") {
-            setCityInput("guayaquil");
-            setLatitude("-2.170997");
-            setLongitud("-79.922359");
-        }
-        else if (event.target.value === "quito") {
-            setCityInput("quito");
-            setLatitude("-0.22985");
-            setLongitud("-78.52495");
+        const selectedCity = event.target.value;
+        setCityInput(selectedCity);
+        
+        // Definir las coordenadas para cada ciudad
+        switch (selectedCity) {
+            case "guayaquil":
+                setLatitude("-2.170997");
+                setLongitud("-79.922359");
+                break;
+            case "quito":
+                setLatitude("-0.22985");
+                setLongitud("-78.52495");
+                break;
+            case "manta":
+                setLatitude("-0.9677");
+                setLongitud("-80.7089");
+                break;
+            case "cuenca":
+                setLatitude("-2.9001");
+                setLongitud("-79.0059");
+                break;
+            default:
+                setLatitude("0");
+                setLongitud("0");
+                break;
         }
     };
 

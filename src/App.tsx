@@ -30,19 +30,17 @@ import HeaderUI from './components/HeaderUI';
 import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
-
 import TableUI from './components/TableUI';
 import ChartUI from './components/ChartUI';
 
 import DataFetcher from './components/functions/DataFetcher';
-import { Hourly } from '@/types/DashboardTypes';
 
 import { useState } from 'react';
 
 function App() {
     const [latitude, setLatitude] = useState<string>("0");
-    const [longitud, setLongitud] = useState<string>("0");
-    const dataFetcherOutput = DataFetcher({latitude, longitud});
+    const [longitude, setLongitud] = useState<string>("0");
+    const dataFetcherOutput = DataFetcher({latitude, longitude});
 
      return (
       <>
