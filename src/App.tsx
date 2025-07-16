@@ -35,18 +35,57 @@ import ChartUI from './components/ChartUI';
 
 import DataFetcher from './components/functions/DataFetcher';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { chat } from './components/ai/CohereAssistant'
 
 function App() {
     const [latitude, setLatitude] = useState<string>("0");
     const [longitude, setLongitud] = useState<string>("0");
+    {/* DESDE AQUI */}
+    const [chatResponse, setChatResponse] = useState<any>(null);
+    const [chatError, setChatError] = useState<string | null>(null);
+    {/* HASTA AQUI */}
     const dataFetcherOutput = DataFetcher({latitude, longitude});
+
+    {/* DESDE AQUI */}
+    useEffect(() => {
+        const testChat = async () => {
+            try {
+                const response = await chat();
+                console.log('Chat response:', response);
+                setChatResponse(response);
+            } catch (error) {
+                console.error('Error calling chat:', error);
+                setChatError(error instanceof Error ? error.message : 'Unknown error');
+            }
+        };
+
+        testChat();
+    }, []);
+    {/* HASTA AQUI */}
 
      return (
       <>
          <Grid>
              <HeaderUI/>
          </Grid>
+
+        {/* DESDE AQUI */}
+         {/* Mostrar respuesta del chat para testing */}
+         {chatResponse && (
+             <Grid container sx={{ padding: 2, backgroundColor: '#f5f5f5', margin: 2 }}>
+                 <h3>Respuesta del Chat:</h3>
+                 <pre>{JSON.stringify(chatResponse, null, 2)}</pre>
+             </Grid>
+         )}
+         
+         {chatError && (
+             <Grid container sx={{ padding: 2, backgroundColor: '#ffebee', margin: 2 }}>
+                 <h3>Error del Chat:</h3>
+                 <p style={{ color: 'red' }}>{chatError}</p>
+             </Grid>
+         )}
+         {/* Hasta Aquí */}
 
          <Grid
              container justifyContent="right" alignItems="center">
